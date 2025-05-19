@@ -19,7 +19,6 @@ import { Pie, Bar, Doughnut } from 'react-chartjs-2';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 
-// Register ChartJS components
 ChartJS.register(
   ArcElement, 
   Tooltip, 
@@ -47,17 +46,16 @@ const AttendanceReport = ({ lectureId, lectureName }) => {
     percentage: 0
   });
 
-  // Colors using purple for present and red for absent
   const chartColors = {
-    present: 'rgba(109, 40, 217, 0.7)',  // Purple-700
-    absent: 'rgba(239, 68, 68, 0.7)',    // Red-500
-    face: 'rgba(124, 58, 237, 0.7)',     // Purple-600
-    manual: 'rgba(167, 139, 250, 0.7)',  // Purple-400
+    present: 'rgba(109, 40, 217, 0.7)',  
+    absent: 'rgba(239, 68, 68, 0.7)',    
+    face: 'rgba(124, 58, 237, 0.7)',     
+    manual: 'rgba(167, 139, 250, 0.7)',  
     border: {
-      present: 'rgba(109, 40, 217, 1)',  // Purple-700
-      absent: 'rgba(239, 68, 68, 1)',    // Red-500
-      face: 'rgba(124, 58, 237, 1)',     // Purple-600
-      manual: 'rgba(167, 139, 250, 1)'   // Purple-400
+      present: 'rgba(109, 40, 217, 1)',  
+      absent: 'rgba(239, 68, 68, 1)',    
+      face: 'rgba(124, 58, 237, 1)',     
+      manual: 'rgba(167, 139, 250, 1)'   
     }
   };
 
@@ -122,7 +120,6 @@ const AttendanceReport = ({ lectureId, lectureName }) => {
       ['Absent', attendanceSummary.absent],
       ['Attendance Rate', `${attendanceSummary.percentage}%`]
     ];
-    
     const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
     XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
     
@@ -260,14 +257,14 @@ const AttendanceReport = ({ lectureId, lectureName }) => {
           size: 14,
           weight: 'bold'
         },
-        color: '#6D28D9' // Purple-700
+        color: '#6D28D9' 
       }
     },
     scales: {
       x: {
         beginAtZero: true,
         ticks: {
-          precision: 0 // Only show whole numbers
+          precision: 0 
         },
         grid: {
           display: false
@@ -286,32 +283,29 @@ const AttendanceReport = ({ lectureId, lectureName }) => {
     }
   };
 
-  // Get gender distribution data (example of a non-date based third chart)
   const getAttendanceProgressData = () => {
     // Calculate percentages
     const totalStudents = attendanceSummary.total;
     const presentPercent = Math.round((attendanceSummary.present / totalStudents) * 100) || 0;
-    const targetPercent = 75; // Example target attendance rate
+    // const targetPercent = 75; 
     const remainingPercent = 100 - presentPercent;
     
     return {
-      labels: ['Current Attendance', 'Target (75%)', 'Remaining'],
+      labels: ['Current Attendance', 'Remaining'],
       datasets: [
         {
-          data: [presentPercent, targetPercent, remainingPercent],
+          data: [presentPercent, remainingPercent],
           backgroundColor: [
             chartColors.present,
-            'rgba(167, 139, 250, 0.5)', // Light purple for target
-            'rgba(243, 244, 246, 0.7)'  // Gray for remaining
+            'rgba(167, 139, 250, 0.5)',   
           ],
           borderColor: [
             chartColors.border.present,
             'rgba(167, 139, 250, 0.9)',
-            'rgba(243, 244, 246, 0.9)'
           ],
           borderWidth: 1,
-          circumference: 270, // Create semi-circle
-          rotation: 225,     // Rotate to look like a gauge
+          circumference: 270, 
+          rotation: 225,     
         }
       ]
     };
@@ -327,7 +321,7 @@ const AttendanceReport = ({ lectureId, lectureName }) => {
         labels: {
           boxWidth: 12,
           font: {
-            size: 11
+            size: 12
           }
         }
       },
@@ -342,12 +336,12 @@ const AttendanceReport = ({ lectureId, lectureName }) => {
       },
       title: {
         display: true,
-        text: 'Attendance Progress',
+        // text: 'Attendance Progress',
         font: {
           size: 14,
           weight: 'bold'
         },
-        color: '#6D28D9' // Purple-700
+        color: '#6D28D9' 
       }
     },
     animation: {
@@ -470,9 +464,9 @@ const AttendanceReport = ({ lectureId, lectureName }) => {
                 <div className="bg-white p-4 rounded-xl shadow-md border border-gray-100">
                   <h4 className="text-center font-medium mb-4 text-purple-700">Attendance Progress</h4>
                   <div className="h-64 flex flex-col items-center justify-center">
-                    <div className="relative w-full h-48 flex items-center justify-center">
+                    <div className="relative w-full h-full flex items-center justify-center">
                       <Doughnut data={getAttendanceProgressData()} options={doughnutOptions} />
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center h-full mt-4  justify-center">
                         <AnimatedPercentage value={attendanceSummary.percentage} color="text-purple-700" />
                       </div>
                     </div>
